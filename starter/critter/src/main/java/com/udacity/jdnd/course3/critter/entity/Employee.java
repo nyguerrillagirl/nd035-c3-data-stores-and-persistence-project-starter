@@ -67,6 +67,22 @@ public class Employee extends Person {
 
 
 	
+	public Set<EmployeeSkill> getEmployeeSkills() {
+		return employeeSkills;
+	}
+
+	public void setEmployeeSkills(Set<EmployeeSkill> employeeSkills) {
+		this.employeeSkills = employeeSkills;
+	}
+
+	public Set<DayOfWeek> getEmployeeWorkdays() {
+		return employeeWorkdays;
+	}
+
+	public void setEmployeeWorkdays(Set<DayOfWeek> employeeWorkdays) {
+		this.employeeWorkdays = employeeWorkdays;
+	}
+
 	public void addSkill(EmployeeSkill skill) {
 		if (employeeSkills == null) {
 			employeeSkills = new HashSet<>();
