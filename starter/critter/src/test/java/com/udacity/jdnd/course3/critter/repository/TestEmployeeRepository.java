@@ -55,7 +55,7 @@ class TestEmployeeRepository {
 		if (optionalSavedEmployee.isPresent()) {
 			Employee savedEmployee = optionalSavedEmployee.get();
 			// let's confirm we obtained the saved skills
-			assertTrue(savedEmployee.getEmployeeSkills().size() == 2);
+			assertTrue(savedEmployee.getSkills().size() == 2);
 		}	
 	}
 
@@ -74,8 +74,35 @@ class TestEmployeeRepository {
 		if (optionalSavedEmployee.isPresent()) {
 			Employee savedEmployee = optionalSavedEmployee.get();
 			// let's confirm we obtained the saved skills
-			assertTrue(savedEmployee.getEmployeeWorkdays().size() == 3);
+			assertTrue(savedEmployee.getDaysAvailable().size() == 3);
 		}	
+	}
+	
+	@Test
+	public void testEmployeeDeleteAllWorkdaysAndSkillsDeleted() {
+		Employee newEmployee = new Employee("Lorraine Figueroa");
+		newEmployee.addSkill(EmployeeSkill.PETTING);
+		newEmployee.addSkill(EmployeeSkill.WALKING);
+		newEmployee.addWorkday(DayOfWeek.MONDAY);
+		newEmployee.addWorkday(DayOfWeek.WEDNESDAY);
+		newEmployee.addWorkday(DayOfWeek.FRIDAY);
+		employeeRepository.save(newEmployee);
+		Long id = newEmployee.getId();
+		
+		// Get the record anew
+		Optional<Employee> optionalSavedEmployee = employeeRepository.findById(newEmployee.getId());
+		Employee savedEmployee = null;
+		if (optionalSavedEmployee.isPresent()) {
+			savedEmployee = optionalSavedEmployee.get();
+		}	
+		
+		// Now delete employee record
+		employeeRepository.delete(savedEmployee);
+		
+		// Check the db
+		optionalSavedEmployee = employeeRepository.findById(newEmployee.getId());
+		assertTrue(optionalSavedEmployee.isEmpty());
+
 	}
 
 }

@@ -28,7 +28,7 @@ public class Employee extends Person {
 			joinColumns = @JoinColumn(name = "employee_id"))
 	@Column(name="skill", nullable=false)
 	@Enumerated(EnumType.STRING)
-	private Set<EmployeeSkill> employeeSkills;
+	private Set<EmployeeSkill> skills;
 	
 	@ElementCollection(targetClass=DayOfWeek.class)
 	@JoinTable(
@@ -36,22 +36,22 @@ public class Employee extends Person {
 			joinColumns = @JoinColumn(name = "employee_id"))
 	@Column(name="workday", nullable=false)
 	@Enumerated(EnumType.STRING)
-	private Set<DayOfWeek> employeeWorkdays;
+	private Set<DayOfWeek> daysAvailable;
 	
 	
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
 		sb.append("id: " + getId() + ";name: " + getName());
-		if (employeeSkills != null) {
+		if (skills != null) {
 			sb.append("\nSkills:\n");
-			for (EmployeeSkill aSkill:employeeSkills) {
+			for (EmployeeSkill aSkill:skills) {
 				sb.append("\tskill: " + aSkill.toString() + "\n");
 			}
 		}
 		
-		if (employeeWorkdays != null) {
+		if (daysAvailable != null) {
 			sb.append("\nWorkdays\n");
-			for (DayOfWeek aWorkday: employeeWorkdays) {
+			for (DayOfWeek aWorkday: daysAvailable) {
 				sb.append("\tday: " + aWorkday.toString() + "\n");
 			}
 		}
@@ -65,36 +65,34 @@ public class Employee extends Person {
 		setName(name);
 	}
 
-
-	
-	public Set<EmployeeSkill> getEmployeeSkills() {
-		return employeeSkills;
+	public Set<EmployeeSkill> getSkills() {
+		return skills;
 	}
 
-	public void setEmployeeSkills(Set<EmployeeSkill> employeeSkills) {
-		this.employeeSkills = employeeSkills;
+	public void setSkills(Set<EmployeeSkill> skills) {
+		this.skills = skills;
 	}
 
-	public Set<DayOfWeek> getEmployeeWorkdays() {
-		return employeeWorkdays;
+	public Set<DayOfWeek> getDaysAvailable() {
+		return daysAvailable;
 	}
 
-	public void setEmployeeWorkdays(Set<DayOfWeek> employeeWorkdays) {
-		this.employeeWorkdays = employeeWorkdays;
+	public void setDaysAvailable(Set<DayOfWeek> daysAvailable) {
+		this.daysAvailable = daysAvailable;
 	}
 
 	public void addSkill(EmployeeSkill skill) {
-		if (employeeSkills == null) {
-			employeeSkills = new HashSet<>();
+		if (skills == null) {
+			skills = new HashSet<>();
 		}
-		employeeSkills.add(skill);
+		skills.add(skill);
 	}
 	
 	public void addWorkday(DayOfWeek workday) {
-		if (employeeWorkdays == null) {
-			employeeWorkdays = new HashSet<>();
+		if (daysAvailable == null) {
+			daysAvailable = new HashSet<>();
 		}
-		employeeWorkdays.add(workday);
+		daysAvailable.add(workday);
 	}
 
 
