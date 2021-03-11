@@ -54,6 +54,7 @@ public class CritterFunctionalTest {
 
     @Test
     public void testCreateEmployee(){
+    	// DONE
         EmployeeDTO employeeDTO = createEmployeeDTO();
         EmployeeDTO newEmployee = userController.saveEmployee(employeeDTO);
         EmployeeDTO retrievedEmployee = userController.getEmployee(newEmployee.getId());
@@ -121,6 +122,7 @@ public class CritterFunctionalTest {
 
     @Test
     public void testChangeEmployeeAvailability() {
+    	// DONE
         EmployeeDTO employeeDTO = createEmployeeDTO();
         EmployeeDTO emp1 = userController.saveEmployee(employeeDTO);
         Assertions.assertNull(emp1.getDaysAvailable());
