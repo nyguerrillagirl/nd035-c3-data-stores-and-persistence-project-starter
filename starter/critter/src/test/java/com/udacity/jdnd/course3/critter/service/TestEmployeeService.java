@@ -16,6 +16,7 @@ import com.udacity.jdnd.course3.critter.CritterApplication;
 import com.udacity.jdnd.course3.critter.entity.Employee;
 import com.udacity.jdnd.course3.critter.repository.EmployeeRepository;
 import com.udacity.jdnd.course3.critter.user.EmployeeDTO;
+import com.udacity.jdnd.course3.critter.user.EmployeeSkill;
 
 
 @Transactional
@@ -59,5 +60,72 @@ class TestEmployeeService {
 			fail("Employee not found.");
 		}
 	}
-
+	
+	@Test
+	public void testDoesEmployeeQuailify1() {
+		// positive test
+		Set<EmployeeSkill> targetSkills = new HashSet<EmployeeSkill>();
+		targetSkills.add(EmployeeSkill.FEEDING);
+		targetSkills.add(EmployeeSkill.PETTING);
+		DayOfWeek targetWorkday = DayOfWeek.WEDNESDAY;
+		
+		// Now create an employee that works on WEDNESDAY and has those skills
+		Employee employee = new Employee();
+		employee.addSkill(EmployeeSkill.WALKING);
+		employee.addSkill(EmployeeSkill.PETTING);
+		employee.addSkill(EmployeeSkill.FEEDING);
+		
+		employee.addWorkday(DayOfWeek.MONDAY);
+		employee.addWorkday(DayOfWeek.WEDNESDAY);
+		employee.addWorkday(DayOfWeek.FRIDAY);
+		employee.setName("Lorraine Figueroa");
+		
+		boolean result = employeeService.doesEmployeeQualify(employee, targetWorkday, targetSkills);
+		assertEquals(true, result);
+	}
+	@Test
+	public void testDoesEmployeeQuailify2() {
+		// negative test
+		
+		Set<EmployeeSkill> targetSkills = new HashSet<EmployeeSkill>();
+		targetSkills.add(EmployeeSkill.FEEDING);
+		targetSkills.add(EmployeeSkill.PETTING);
+		DayOfWeek targetWorkday = DayOfWeek.WEDNESDAY;
+		
+		// Now create an employee that works on WEDNESDAY and has those skills
+		Employee employee = new Employee();
+		employee.addSkill(EmployeeSkill.WALKING);
+		employee.addSkill(EmployeeSkill.PETTING);
+		
+		employee.addWorkday(DayOfWeek.MONDAY);
+		employee.addWorkday(DayOfWeek.WEDNESDAY);
+		employee.addWorkday(DayOfWeek.FRIDAY);
+		employee.setName("Lorraine Figueroa");
+		
+		boolean result = employeeService.doesEmployeeQualify(employee, targetWorkday, targetSkills);
+		assertEquals(false, result);
+		
+	}
+	
+	@Test
+	public void testDoesEmployeeQuailify3() {
+		// negative test, has skills but does not work on that day
+		Set<EmployeeSkill> targetSkills = new HashSet<EmployeeSkill>();
+		targetSkills.add(EmployeeSkill.FEEDING);
+		targetSkills.add(EmployeeSkill.PETTING);
+		DayOfWeek targetWorkday = DayOfWeek.WEDNESDAY;
+		
+		// Now create an employee that works on WEDNESDAY and has those skills
+		Employee employee = new Employee();
+		employee.addSkill(EmployeeSkill.WALKING);
+		employee.addSkill(EmployeeSkill.PETTING);
+		employee.addSkill(EmployeeSkill.FEEDING);
+		
+		employee.addWorkday(DayOfWeek.MONDAY);
+		employee.addWorkday(DayOfWeek.FRIDAY);
+		employee.setName("Lorraine Figueroa");
+		
+		boolean result = employeeService.doesEmployeeQualify(employee, targetWorkday, targetSkills);
+		assertEquals(false, result);
+	}
 }

@@ -1,6 +1,8 @@
 package com.udacity.jdnd.course3.critter.service;
 
 import java.time.DayOfWeek;
+import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -17,6 +19,7 @@ import com.udacity.jdnd.course3.critter.entity.Employee;
 import com.udacity.jdnd.course3.critter.repository.EmployeeRepository;
 import com.udacity.jdnd.course3.critter.user.EmployeeDTO;
 import com.udacity.jdnd.course3.critter.user.EmployeeRequestDTO;
+import com.udacity.jdnd.course3.critter.user.EmployeeSkill;
 
 @Service
 public class EmployeeServiceImpl implements IEmployeeService {
@@ -82,8 +85,43 @@ public class EmployeeServiceImpl implements IEmployeeService {
 	
 	@Override
 	public List<EmployeeDTO> findEmployeesForService(EmployeeRequestDTO employeeRequestDTO) {
-		// TODO Auto-generated method stub
-		return null;
+		List<EmployeeDTO> qualifyingEmployees = new ArrayList<>();
+
+		// Inefficient version
+		List<Employee> lstAllEmployees = employeeRepository.findAll();
+		LocalDate dayOfService = employeeRequestDTO.getDate();
+		DayOfWeek targetWorkday = dayOfService.getDayOfWeek();
+		Set<EmployeeSkill> setSkills = employeeRequestDTO.getSkills();
+
+		// Iterate through employees and add to lstAllEmployees all qualifying
+		// employees
+		for (Employee anEmployee : lstAllEmployees) {
+			if (doesEmployeeQualify(anEmployee, targetWorkday, setSkills)) {
+				EmployeeDTO employeeDTO = new EmployeeDTO();
+				BeanUtils.copyProperties(anEmployee, employeeDTO);
+				qualifyingEmployees.add(employeeDTO);
+			}
+		}
+
+		return qualifyingEmployees;
+	}
+	
+	protected boolean doesEmployeeQualify(Employee employee, DayOfWeek targetWorkday, Set<EmployeeSkill> targetSkills) {
+		boolean result = employee.getDaysAvailable().contains(targetWorkday);
+		if (result) {
+			// check the skills
+			Set<EmployeeSkill> employeeSkillSet = employee.getSkills();
+			if (targetSkills != null && targetSkills.size() != 0) {
+				for (EmployeeSkill aTargetSkill : targetSkills) {
+					if (!employeeSkillSet.contains(aTargetSkill)) {
+						result = false;
+						break;
+					}
+				}
+			}
+		}
+
+		return result;
 	}
 
 }
