@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import com.udacity.jdnd.course3.critter.entity.Customer;
 import com.udacity.jdnd.course3.critter.entity.Pet;
+import com.udacity.jdnd.course3.critter.pet.PetNotFoundException;
 import com.udacity.jdnd.course3.critter.repository.CustomerRepository;
 import com.udacity.jdnd.course3.critter.repository.PetRepository;
 import com.udacity.jdnd.course3.critter.user.CustomerDTO;
@@ -83,6 +84,17 @@ public class CustomerServiceImpl implements ICustomerService {
 		BeanUtils.copyProperties(customerDTO, customer);
 		if (customerDTO.getId() == 0) {
 			customer.setId(null);
+		}
+		List<Long> petIds = customerDTO.getPetIds();
+		if (petIds != null && petIds.size() > 0) {
+			for (Long petId: petIds) {
+				Optional<Pet> optionalPet = petRepository.findById(petId);
+				if (optionalPet.isPresent()) {
+					customer.addPet(optionalPet.get());
+				} else {
+					throw new PetNotFoundException("petId: " + petId + " not found.");
+				}
+			}
 		}
 		
 	}

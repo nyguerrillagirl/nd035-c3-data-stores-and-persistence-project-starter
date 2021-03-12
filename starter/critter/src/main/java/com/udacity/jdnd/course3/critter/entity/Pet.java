@@ -30,10 +30,8 @@ public class Pet {
 	private Long id;
 
 	@Enumerated(EnumType.STRING)
-	@NotNull
 	private PetType type;
 	
-	@NotNull
 	private String name;
 	
 	@Column(name = "birth_date")
