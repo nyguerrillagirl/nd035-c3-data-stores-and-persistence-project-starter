@@ -20,6 +20,12 @@ public class PetController {
         return petService.savePet(petDTO);
     }
 
+    @PostMapping("/{ownerId}")
+    public PetDTO savePetWithOwner(@PathVariable long ownerId, @RequestBody PetDTO petDTO) {
+    	petDTO.setOwnerId(ownerId);
+        return petService.savePet(petDTO);
+    }
+    
     @GetMapping("/{petId}")
     public PetDTO getPet(@PathVariable long petId) {
         return petService.getPet(petId);
