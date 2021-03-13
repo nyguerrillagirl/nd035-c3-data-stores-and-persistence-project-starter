@@ -1,8 +1,10 @@
 package com.udacity.jdnd.course3.critter.schedule;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 import javax.transaction.Transactional;
 
@@ -10,13 +12,16 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.udacity.jdnd.course3.critter.entity.Customer;
 import com.udacity.jdnd.course3.critter.entity.Employee;
 import com.udacity.jdnd.course3.critter.entity.Pet;
 import com.udacity.jdnd.course3.critter.entity.Schedule;
 import com.udacity.jdnd.course3.critter.pet.PetNotFoundException;
+import com.udacity.jdnd.course3.critter.repository.CustomerRepository;
 import com.udacity.jdnd.course3.critter.repository.EmployeeRepository;
 import com.udacity.jdnd.course3.critter.repository.PetRepository;
 import com.udacity.jdnd.course3.critter.repository.ScheduleRepository;
+import com.udacity.jdnd.course3.critter.service.CustomerNotFoundException;
 import com.udacity.jdnd.course3.critter.service.EmployeeNotFoundException;
 
 @Service
@@ -31,6 +36,8 @@ public class ScheduleServiceImpl implements IScheduleService {
 	
 	@Autowired
 	private PetRepository petRepository;
+	
+	@Autowired CustomerRepository customerRepository;
 	
 	@Override
 	public ScheduleDTO createSchedule(ScheduleDTO scheduleDTO) {
@@ -49,33 +56,64 @@ public class ScheduleServiceImpl implements IScheduleService {
 	@Override
 	public List<ScheduleDTO> getAllSchedules() {
 		List<Schedule> lstSchedules = scheduleRepository.findAll();
-		List<ScheduleDTO> lstScheduleDTOs = new ArrayList<ScheduleDTO>();
-		if (lstSchedules != null && lstSchedules.size() > 0) {
-			for (Schedule aSchedule : lstSchedules) {
-				lstScheduleDTOs.add(convert(aSchedule));
-			}
-		}
-		return lstScheduleDTOs;
+		return convertFromScheduleListToDTOList(lstSchedules);
 	}
 
 	@Override
 	public List<ScheduleDTO> getScheduleForPet(long petId) {
-		// TODO Auto-generated method stub
-		return null;
+		Optional<Pet> optionalPet = petRepository.findById(petId);
+		if (optionalPet.isPresent()) {
+			Pet pet = optionalPet.get();
+			List<Schedule> lstSchedules = scheduleRepository.findByScheduledPets(pet);
+			return convertFromScheduleListToDTOList(lstSchedules);
+		} else {
+			throw new PetNotFoundException("Pet with id: " + petId + " not found.");
+		}
 	}
 
 	@Override
 	public List<ScheduleDTO> getScheduleForEmployee(long employeeId) {
-		// TODO Auto-generated method stub
-		return null;
+		Optional<Employee> optionalEmployee = employeeRepository.findById(employeeId);
+		if (optionalEmployee.isPresent()) {
+			Employee employee = optionalEmployee.get();
+			List<Schedule> lstSchedules = scheduleRepository.findByScheduledEmployees(employee);			
+			return convertFromScheduleListToDTOList(lstSchedules);
+		} else {
+			throw new EmployeeNotFoundException("Employee with id: " + employeeId + " not found.");
+		}
 	}
 
 	@Override
 	public List<ScheduleDTO> getScheduleForCustomer(long customerId) {
-		// TODO Auto-generated method stub
-		return null;
+		Optional<Customer> optionalCustomer = customerRepository.findById(customerId);
+		if (optionalCustomer.isPresent()) {
+			Customer customer = optionalCustomer.get();
+			List<Pet> lstCustomerPets = petRepository.findByCustomer(customer);
+			List<ScheduleDTO> lstScheduleDTOs = new ArrayList<ScheduleDTO>();
+			Set<Schedule> scheduleSet = new HashSet<Schedule>();
+			if (lstCustomerPets != null && lstCustomerPets.size() > 0) {
+				for (Pet aPet:lstCustomerPets) {
+					List<Schedule> customerPetSchedules = scheduleRepository.findByScheduledPets(aPet);
+					addListToScheduleSet(scheduleSet, customerPetSchedules);
+				}
+			}
+			return lstScheduleDTOs;
+		} else {
+			throw new CustomerNotFoundException("Customer with id: " + customerId + " not found.");
+		}
+		
 	}
 	
+	protected void addListToScheduleSet(Set<Schedule> scheduleSet, List<Schedule> customerPetSchedules) {
+		if (customerPetSchedules != null && customerPetSchedules.size() > 0) {
+			for (Schedule aSchedule:customerPetSchedules) {
+				scheduleSet.add(aSchedule);
+			}
+		}		
+	}
+
+
+
 	protected ScheduleDTO convert(Schedule aSchedule) {
 		//  Use BeanUtil for what it is good for
 		ScheduleDTO scheduleDTO = new ScheduleDTO();
@@ -112,6 +150,16 @@ public class ScheduleServiceImpl implements IScheduleService {
 		}	
 	}
 	
+	protected List<ScheduleDTO> convertFromScheduleListToDTOList(List<Schedule> lstSchedules) {
+		List<ScheduleDTO> lstScheduleDTOs  = new ArrayList<ScheduleDTO>();
+		if (lstSchedules != null && lstSchedules.size() > 0) {
+			for (Schedule aSchedule : lstSchedules) {
+				lstScheduleDTOs.add(convert(aSchedule));
+			}
+		}	
+		return lstScheduleDTOs;
+	}
+	
 	protected void processPetList(Schedule schedule, List<Long> petIds) {
 		if (petIds != null && petIds.size() > 0) {
 			for (Long petId : petIds) {
@@ -123,5 +171,9 @@ public class ScheduleServiceImpl implements IScheduleService {
 				}
 			}
 		}
+	}
+	
+	protected void removeAllSchedules() {
+		scheduleRepository.deleteAll();
 	}
 }

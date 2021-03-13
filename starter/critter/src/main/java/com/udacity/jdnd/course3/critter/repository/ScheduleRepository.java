@@ -13,9 +13,9 @@ import com.udacity.jdnd.course3.critter.entity.Schedule;
 @Repository
 public interface ScheduleRepository extends CrudRepository<Schedule, Long>{
 
-	public List<Employee> findByScheduledEmployees(Employee employee);
+	public List<Schedule> findByScheduledEmployees(Employee employee);
 	
-	public List<Pet> findByScheduledPets(Pet pet);
+	public List<Schedule> findByScheduledPets(Pet pet);
 	
 	public List<Schedule> findAll();
 	
