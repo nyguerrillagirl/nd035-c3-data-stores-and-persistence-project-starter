@@ -5,15 +5,18 @@ import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
 import javax.validation.constraints.NotNull;
 
+import org.hibernate.annotations.NaturalId;
+
 @MappedSuperclass
 public class Person {
 	
 	@Id
 	@GeneratedValue
-	private Long id;
+	protected Long id;
 
+	@NaturalId
 	@NotNull
-	private String name;
+	protected String name;
 	
 	public Person() {}
 	
