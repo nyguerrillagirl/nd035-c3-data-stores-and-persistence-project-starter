@@ -3,20 +3,25 @@ package com.udacity.jdnd.course3.critter.entity;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.Table;
 
 import com.udacity.jdnd.course3.critter.user.EmployeeSkill;
 
 @Entity
+@Table(name = "schedules")
 public class Schedule {
 
 	@Id
@@ -29,9 +34,17 @@ public class Schedule {
 	@JoinTable(name = "schedule_employee", joinColumns = @JoinColumn(name = "schedule_id"), 
 	inverseJoinColumns = @JoinColumn(name = "employee_id"))
 	private Set<Employee> scheduledEmployees = new HashSet<Employee>();
+
+	@ManyToMany(cascade = { CascadeType.PERSIST, CascadeType.MERGE })
+	@JoinTable(name = "schedule_pet", joinColumns = @JoinColumn(name = "schedule_id"), 
+	inverseJoinColumns = @JoinColumn(name = "pet_id"))
+	private Set<Pet> scheduledPets = new HashSet<Pet>();
 	
-	//private Set<Pet> pets;
-	//private Set<EmployeeSkill> activities;
+	@ElementCollection(targetClass = EmployeeSkill.class)
+	@JoinTable(name = "schedule_activity", joinColumns = @JoinColumn(name = "schedule_id"))
+	@Column(name = "skill", nullable = false)
+	@Enumerated(EnumType.STRING)
+	private Set<EmployeeSkill> activities = new HashSet<EmployeeSkill>();
 
 	public Schedule() {}
 	
@@ -45,6 +58,7 @@ public class Schedule {
 		sb.append("Appt. date: " + formatter.format(date) + "\n");
 		return sb.toString();
 	}
+	// Handle Employee
 	public void addScheduledEmployee(Employee employee) {
 		scheduledEmployees.add(employee);
 		employee.getSchedules().add(this);
@@ -53,6 +67,26 @@ public class Schedule {
 	public void removeScheduledEmployee(Employee employee) {
 		scheduledEmployees.remove(employee);
 		employee.getSchedules().remove(this);
+	}
+	
+	// Handle Pet
+	public void addScheduledPet(Pet pet) {
+		scheduledPets.add(pet);
+		pet.getSchedules().add(this);
+	}
+	
+	public void removeScheduledPet(Pet pet) {
+		scheduledPets.remove(pet);
+		pet.getSchedules().remove(this);
+	}
+	
+	// Handle Activities
+	public void addActivity(EmployeeSkill activity) {
+		activities.add(activity);
+	}
+	
+	public void removeActivity(EmployeeSkill activity) {
+		activities.remove(activity);
 	}
 	
 	public Long getId() {
@@ -79,7 +113,23 @@ public class Schedule {
 		this.scheduledEmployees = scheduledEmployees;
 	}
 
-    @Override
+    public Set<Pet> getScheduledPets() {
+		return scheduledPets;
+	}
+
+	public void setScheduledPets(Set<Pet> scheduledPets) {
+		this.scheduledPets = scheduledPets;
+	}
+
+	public Set<EmployeeSkill> getActivities() {
+		return activities;
+	}
+
+	public void setScheduledActivities(Set<EmployeeSkill> activities) {
+		this.activities = activities;
+	}
+
+	@Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof Schedule)) return false;

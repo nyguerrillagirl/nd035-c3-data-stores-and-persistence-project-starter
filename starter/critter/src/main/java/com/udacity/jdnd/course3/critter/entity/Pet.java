@@ -3,7 +3,9 @@ package com.udacity.jdnd.course3.critter.entity;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.FormatStyle;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -43,6 +45,10 @@ public class Pet {
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name="customer_id", nullable=false)
 	private Customer customer;
+
+	@ManyToMany(mappedBy = "scheduledPets")
+	private Set<Schedule> schedules = new HashSet<Schedule>();
+
 	
 	public Pet() {}
 	
@@ -113,6 +119,14 @@ public class Pet {
 
 	public void setCustomer(Customer customer) {
 		this.customer = customer;
+	}
+
+	public Set<Schedule> getSchedules() {
+		return schedules;
+	}
+
+	public void setSchedules(Set<Schedule> schedules) {
+		this.schedules = schedules;
 	}
 	
 }
