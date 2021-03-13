@@ -6,6 +6,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
+import javax.transaction.Transactional;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
@@ -19,6 +21,7 @@ import com.udacity.jdnd.course3.critter.repository.PetRepository;
 import com.udacity.jdnd.course3.critter.service.CustomerNotFoundException;
 
 @Service
+@Transactional
 public class PetServiceImpl implements IPetService {
 	private static Logger logger = LoggerFactory.getLogger(PetServiceImpl.class);
 	

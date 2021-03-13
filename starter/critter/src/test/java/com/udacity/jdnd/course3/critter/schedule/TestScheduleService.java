@@ -8,6 +8,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import javax.transaction.Transactional;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.jupiter.api.Assertions;
@@ -30,6 +32,7 @@ import com.udacity.jdnd.course3.critter.user.EmployeeSkill;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
+@Transactional
 public class TestScheduleService {
 	
 	@Autowired
@@ -44,9 +47,6 @@ public class TestScheduleService {
 	@Autowired
 	private EmployeeRepository employeeRepository;
 
-	public void cleanup() {
-		scheduleService.removeAllSchedules();
-	}
 	
 	@Test
 	public void testConvertToDTO() {
@@ -86,14 +86,12 @@ public class TestScheduleService {
 	@Test
 	public void testGetAllSchedules() {
 		// test no schedules
-		cleanup();
 		List<ScheduleDTO> lstScheduleDTOs = scheduleService.getAllSchedules();
 		assertTrue(lstScheduleDTOs.size() == 0);
 	}
 	
 	@Test
 	public void testCreateSchedule() {
-		cleanup();
 		// Create empty schedule
 		ScheduleDTO scheduleDTO = new ScheduleDTO();
 		scheduleDTO.setDate(LocalDate.now());
@@ -110,7 +108,6 @@ public class TestScheduleService {
 	@Test
 	public void testGetAllSchedules2() {
 		// Add Schedule 1
-		cleanup();
 		ScheduleDTO schedule1 = new ScheduleDTO();
 		schedule1.setDate(LocalDate.now());
 		schedule1 = scheduleService.createSchedule(schedule1);
@@ -126,7 +123,6 @@ public class TestScheduleService {
 	
 	@Test
 	public  void testGetScheduleForPet1() {
-		cleanup();
 		Assertions.assertThrows(PetNotFoundException.class,() -> {
 			scheduleService.getScheduleForPet(100L);
 		});
@@ -135,7 +131,6 @@ public class TestScheduleService {
 	@Test
 	public  void testGetScheduleForPet2() {
 		// petid exist but not on any schedule
-		cleanup();
 		Customer customer = new Customer("Lorraine Figueroa", "2223334444");
 		customerRepository.save(customer);
 		
@@ -150,7 +145,6 @@ public class TestScheduleService {
 	@Test
 	public  void testGetScheduleForPet3() {
 		// petid in one schedule
-		cleanup();
 		Customer customer = new Customer("Joe Biden", "2223334444");
 		customerRepository.save(customer);
 		
@@ -173,7 +167,6 @@ public class TestScheduleService {
 	
 	@Test
 	public  void testGetScheduleForPet4() {
-		cleanup();
 		Customer customer = new Customer("Barbara Striesand", "2223334444");
 		customerRepository.save(customer);
 		

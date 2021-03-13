@@ -14,7 +14,7 @@ public class Person {
 	@GeneratedValue
 	protected Long id;
 
-	@NaturalId
+	//@NaturalId
 	@NotNull
 	protected String name;
 	

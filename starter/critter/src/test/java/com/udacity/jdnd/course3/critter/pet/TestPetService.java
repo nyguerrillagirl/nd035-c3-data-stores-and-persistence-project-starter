@@ -7,6 +7,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import javax.transaction.Transactional;
+
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +23,7 @@ import com.udacity.jdnd.course3.critter.user.CustomerDTO;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
+@Transactional
 class TestPetService {
 	
 	@Autowired

@@ -22,6 +22,7 @@ import com.udacity.jdnd.course3.critter.user.EmployeeRequestDTO;
 import com.udacity.jdnd.course3.critter.user.EmployeeSkill;
 
 @Service
+@Transactional
 public class EmployeeServiceImpl implements IEmployeeService {
 	private static Logger logger = LoggerFactory.getLogger(EmployeeServiceImpl.class);
 
