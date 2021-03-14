@@ -1,9 +1,12 @@
 package com.udacity.jdnd.course3.critter.utility;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.Assert.assertTrue;
 
 import java.time.DayOfWeek;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import org.junit.jupiter.api.Test;
@@ -71,5 +74,49 @@ class TestUtility {
 		assertTrue(employeeDTO.getSkills().size() == 2);
 		assertTrue(employeeDTO.getId() == 1000);
 	}
-
+	
+	@Test
+	public void testSortingLongs() {
+		List<Long> list1 = Arrays.asList(100L, 200L, 50L);
+		
+		Collections.sort(list1);
+		assertTrue(list1.get(0).intValue() == 50L);
+		assertTrue(list1.get(1).intValue() == 100L);
+		assertTrue(list1.get(2).intValue() == 200L);
+	}
+    @Test
+    public void testCheckLists1() {
+    	List<Long> list1 = null;
+    	List<Long> list2 = null;
+    	checkLongList(list1, list2);
+    }
+    
+    @Test
+    public void testCheckLists2() {
+    	List<Long> list1 = Arrays.asList(100L, 200L);
+    	
+    	List<Long> list2 = Arrays.asList(100L, 200L);
+    	checkLongList(list1, list2);
+    }  
+    
+    @Test
+    public void testCheckLists3() {
+    	List<Long> list1 = Arrays.asList(100L, 200L);
+    	
+    	List<Long> list2 = Arrays.asList(200L, 100L);
+    	checkLongList(list1, list2);
+    }    
+   
+    private static void checkLongList(List<Long> list1, List<Long> list2) {
+    	if (list1 == null) {
+    		assertTrue(list2 == null);
+    		return;
+    	}
+    	
+    	assertTrue(list1.size() == list2.size());
+    	
+    	for (Long aValue:list1) {
+    		list2.contains(aValue);
+    	}
+    }
 }

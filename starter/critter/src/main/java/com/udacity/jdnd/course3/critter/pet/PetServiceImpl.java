@@ -33,6 +33,7 @@ public class PetServiceImpl implements IPetService {
 
 	@Override
 	public PetDTO savePet(PetDTO petDTO) {
+		logger.info("PetServiceImpl.savePet - invoked.");
 		Optional<Customer> optionalCustomer = customerRepository.findById(petDTO.getOwnerId());
 		Customer savedCustomer = null;
 		if (optionalCustomer.isPresent()) {
@@ -50,7 +51,6 @@ public class PetServiceImpl implements IPetService {
 		petEntity.setCustomer(savedCustomer);
 		petRepository.save(petEntity);
 		petDTO.setId(petEntity.getId());
-		logger.info("===> pet details: " + petEntity.toString());
 		petSet.add(petEntity);
 		
 		savedCustomer.setOwnedPets(petSet);
@@ -63,11 +63,9 @@ public class PetServiceImpl implements IPetService {
 	protected void copyFromDTOToPet(PetDTO petDTO, Pet pet) {
 		BeanUtils.copyProperties(petDTO, pet);
 		if (petDTO.getOwnerId() != 0) {
-			logger.info("===> Obtaining customer record");
 			Optional<Customer> optionalCustomer  = customerRepository.findById(petDTO.getOwnerId());
 			if (optionalCustomer.isPresent()) {
 				Customer customer = optionalCustomer.get();
-				logger.info("===> customer record found: \n" + customer.toString());
 				pet.setCustomer(customer);
 			} else {
 				throw new CustomerNotFoundException("Unable to locate customer with id: " + petDTO.getOwnerId());

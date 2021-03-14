@@ -10,7 +10,6 @@ import java.util.Set;
 
 import javax.transaction.Transactional;
 
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.jupiter.api.Assertions;
 import org.junit.runner.RunWith;
@@ -181,7 +180,6 @@ public class TestScheduleService {
 		scheduleDTO.setPetIds(petIds);
 		// save the schedule
 		scheduleDTO  = scheduleService.createSchedule(scheduleDTO);
-		System.out.println("Schedule #1 Id: " + scheduleDTO.getId());
 		
 		ScheduleDTO scheduleDTO2 = new ScheduleDTO();
 		scheduleDTO2.setDate(LocalDate.now());
@@ -190,11 +188,9 @@ public class TestScheduleService {
 		scheduleDTO2.setPetIds(petIds2);
 		// save the schedule
 		scheduleDTO2 = scheduleService.createSchedule(scheduleDTO2);
-		System.out.println("Schedule #2 Id: " + scheduleDTO2.getId());
 		
 		// Now do the test
 		List<ScheduleDTO> lstPetSchedules = scheduleService.getScheduleForPet(pet.getId());
-		System.out.println("lstPetSchedules.size(): " + lstPetSchedules.size());
 		assertTrue(lstPetSchedules.size() == 2);
 		boolean foundSchedule1 = false;
 		boolean foundSchedule2 = false;
@@ -262,7 +258,6 @@ public class TestScheduleService {
 		scheduleDTO.setEmployeeIds(employeeIds);
 		// save the schedule
 		scheduleDTO  = scheduleService.createSchedule(scheduleDTO);
-		System.out.println("Schedule #1 Id: " + scheduleDTO.getId());
 		
 		ScheduleDTO scheduleDTO2 = new ScheduleDTO();
 		scheduleDTO2.setDate(LocalDate.now());
@@ -271,11 +266,9 @@ public class TestScheduleService {
 		scheduleDTO2.setEmployeeIds(employeeIds2);
 		// save the schedule
 		scheduleDTO2 = scheduleService.createSchedule(scheduleDTO2);
-		System.out.println("Schedule #2 Id: " + scheduleDTO2.getId());
 		
 		// Now do the test
 		List<ScheduleDTO> lstEmployeeschedules = scheduleService.getScheduleForEmployee(employee.getId());
-		System.out.println("lstEmployeeschedules.size(): " + lstEmployeeschedules.size());
 		assertTrue(lstEmployeeschedules.size() == 2);
 		boolean foundSchedule1 = false;
 		boolean foundSchedule2 = false;

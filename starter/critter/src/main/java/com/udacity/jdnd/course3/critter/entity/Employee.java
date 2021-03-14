@@ -2,7 +2,6 @@ package com.udacity.jdnd.course3.critter.entity;
 
 import java.time.DayOfWeek;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
@@ -107,7 +106,7 @@ public class Employee extends Person {
 	        if (this == o) return true;
 	        if (o == null || getClass() != o.getClass()) return false;
 	        Employee employee = (Employee) o;
-	        return Objects.equals(name, employee.getClass());
+	        return Objects.equals(getId(), employee.getId());
 	    }
 	 
 	    @Override

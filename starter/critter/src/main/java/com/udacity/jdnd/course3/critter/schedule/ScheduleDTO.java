@@ -1,11 +1,10 @@
 package com.udacity.jdnd.course3.critter.schedule;
 
-import com.udacity.jdnd.course3.critter.entity.Employee;
-import com.udacity.jdnd.course3.critter.entity.Pet;
 import com.udacity.jdnd.course3.critter.user.EmployeeSkill;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 
@@ -35,14 +34,19 @@ public class ScheduleDTO {
 
     public void setEmployeeIds(List<Long> employeeIds) {
         this.employeeIds = employeeIds;
-    }
+        // Required for test cases to work as originally designed!
+        Collections.sort(this.employeeIds);
+   }
 
     public List<Long> getPetIds() {
         return petIds;
     }
 
     public void setPetIds(List<Long> petIds) {
+    	// Since the test cases required that this list be sorted
         this.petIds = petIds;
+        // Required for test cases to work as originally designed!
+       Collections.sort(this.petIds);
     }
 
     public LocalDate getDate() {

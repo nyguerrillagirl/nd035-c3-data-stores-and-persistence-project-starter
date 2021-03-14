@@ -69,9 +69,6 @@ class TestPetRepository {
 		List<Pet> lstCustomerPets = petRepository.findByCustomer(savedCustomer);
 		assertTrue(lstCustomerPets.size() == 2);
 		
-		for (Pet aPet:lstCustomerPets) {
-			System.out.println("aPet: " + aPet.toString());
-		}
 	}
 	
 	private Long createCustomer() {

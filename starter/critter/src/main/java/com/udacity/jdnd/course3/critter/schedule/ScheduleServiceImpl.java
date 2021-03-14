@@ -44,6 +44,7 @@ public class ScheduleServiceImpl implements IScheduleService {
 	
 	@Override
 	public ScheduleDTO createSchedule(ScheduleDTO scheduleDTO) {
+		logger.debug("ScheduleServiceImpl.createSchedule - invoked.");
 		Schedule schedule = new Schedule();
 		schedule.setDate(scheduleDTO.getDate());
 		processEmployeeList(schedule, scheduleDTO.getEmployeeIds());
@@ -88,17 +89,13 @@ public class ScheduleServiceImpl implements IScheduleService {
 
 	@Override
 	public List<ScheduleDTO> getScheduleForCustomer(long customerId) {
-		logger.info("===> getScheduleForCustomer - customerId: " + customerId);
 		Optional<Customer> optionalCustomer = customerRepository.findById(customerId);
 		if (optionalCustomer.isPresent()) {
 			Customer customer = optionalCustomer.get();
-			logger.info("===> getScheduleForCustomer - customer: " + customer.toString());
 			Set<Pet> lstCustomerPets = customer.getOwnedPets();
-			List<ScheduleDTO> lstScheduleDTOs = new ArrayList<ScheduleDTO>();
 			Set<Schedule> scheduleSet = new HashSet<Schedule>();
 			if (lstCustomerPets != null && lstCustomerPets.size() > 0) {
 				for (Pet aPet:lstCustomerPets) {
-					logger.info("===> getScheduleForCustomer finding the schedule associated with pet: " + aPet.getId());
 					List<Schedule> customerPetSchedules = scheduleRepository.findByScheduledPets(aPet);
 					addListToScheduleSet(scheduleSet, customerPetSchedules);
 				}
@@ -115,7 +112,6 @@ public class ScheduleServiceImpl implements IScheduleService {
 	protected void addListToScheduleSet(Set<Schedule> scheduleSet, List<Schedule> customerPetSchedules) {
 		if (customerPetSchedules != null && customerPetSchedules.size() > 0) {
 			for (Schedule aSchedule:customerPetSchedules) {
-				logger.info("addListToScheduleSet - adding schedule: " + aSchedule.getId());
 				scheduleSet.add(aSchedule);
 			}
 		}		

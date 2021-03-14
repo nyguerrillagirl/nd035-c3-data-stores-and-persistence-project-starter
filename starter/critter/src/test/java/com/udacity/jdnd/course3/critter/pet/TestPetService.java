@@ -17,7 +17,6 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import com.udacity.jdnd.course3.critter.entity.Pet;
 import com.udacity.jdnd.course3.critter.repository.PetRepository;
-import com.udacity.jdnd.course3.critter.service.EmployeeNotFoundException;
 import com.udacity.jdnd.course3.critter.service.ICustomerService;
 import com.udacity.jdnd.course3.critter.user.CustomerDTO;
 

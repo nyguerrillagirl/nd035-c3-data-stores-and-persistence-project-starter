@@ -48,7 +48,6 @@ public class CustomerServiceImpl implements ICustomerService {
 			for (Customer customer:lstCustomers) {
 				CustomerDTO customerDTO = new CustomerDTO();
 				copyFromCustomerToDTO(customer, customerDTO);
-				logger.info("===> result from copyFromCustomerToDTO: " + customerDTO.toString());
 				lstCustomerDTOs.add(customerDTO);
 			}
 		}
@@ -63,13 +62,10 @@ public class CustomerServiceImpl implements ICustomerService {
 		Optional<Pet> optionalPet = petRepository.findById(petId);
 		if (optionalPet.isPresent()) {
 			Pet pet = optionalPet.get();
-			// TODO: Check this --> maybe we should get customer record directly
 			Customer customer1 = pet.getCustomer();
-			logger.info("===> Customer record from pet: " + customer1.toString());
 						
 			copyFromCustomerToDTO(customer1, customerDTO);
 		}
-		logger.info("===> getOwnerByPet returning: " + customerDTO.toString());
 		return customerDTO;
 	}
 
@@ -78,9 +74,7 @@ public class CustomerServiceImpl implements ICustomerService {
 		// Process pet data
 		List<Long> petIds = new ArrayList<Long>();
 		if (customer.getOwnedPets() != null) {
-			logger.info("===> adding to customer petId");
 			for (Pet pet:customer.getOwnedPets() ) {
-				logger.info("---> pet: " + pet.toString());
 				petIds.add(pet.getId());
 			}
 		}

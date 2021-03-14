@@ -87,7 +87,6 @@ class TestEmployeeRepository {
 		newEmployee.addWorkday(DayOfWeek.WEDNESDAY);
 		newEmployee.addWorkday(DayOfWeek.FRIDAY);
 		employeeRepository.save(newEmployee);
-		Long id = newEmployee.getId();
 		
 		// Get the record anew
 		Optional<Employee> optionalSavedEmployee = employeeRepository.findById(newEmployee.getId());
@@ -105,4 +104,28 @@ class TestEmployeeRepository {
 
 	}
 
+	@Test
+	public void testEmployeeEquality1() {
+		// equals
+		Employee employee1 = new Employee("Lorraine Figueroa");
+		employee1.setId(1000L);
+		
+		Employee employee2 = new Employee("Lorraine Figueroa");
+		employee2.setId(1000L);
+		
+		assertTrue(employee1.equals(employee2));
+		
+	}
+	
+	@Test
+	public void testEmployeeEquality2() {
+		// NOT equals
+		Employee employee1 = new Employee("Lorraine Figueroa");
+		employee1.setId(1000L);
+		
+		Employee employee2 = new Employee("Lorraine Figueroa");
+		employee2.setId(2000L);
+		
+		assertFalse(employee1.equals(employee2));
+	}	
 }

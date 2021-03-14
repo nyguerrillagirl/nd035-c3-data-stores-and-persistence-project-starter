@@ -32,12 +32,11 @@ public class EmployeeServiceImpl implements IEmployeeService {
 	
 	@Override
 	public EmployeeDTO saveEmployee(EmployeeDTO employeeDTO) {
-		logger.info("===> EmployeeServiceImpl.saveEmployee invoked");
+		logger.debug("EmployeeServiceImpl.saveEmployee - invoked");
 		Employee employeeEntity = new Employee();
 		BeanUtils.copyProperties(employeeDTO, employeeEntity);
 		employeeEntity.setId(null); // needs to be cleared!
 		employeeRepository.save(employeeEntity);
-		logger.info("===> after saving employeeEntity: " + employeeEntity.toString());
 		employeeDTO.setId(employeeEntity.getId());
 		return employeeDTO;
 	}
@@ -60,7 +59,6 @@ public class EmployeeServiceImpl implements IEmployeeService {
 		// Find employee
 		Optional<Employee> optionalEmployee = employeeRepository.findById(id);
 		if (optionalEmployee.isPresent()) {
-			logger.info("EmployeeService.setAvailabity - found employee with id: " + id);
 			Employee employeeEntity = optionalEmployee.get();
 			// 2A. Clear out current availability set
 			clearEmployeeWorkdays(employeeEntity);

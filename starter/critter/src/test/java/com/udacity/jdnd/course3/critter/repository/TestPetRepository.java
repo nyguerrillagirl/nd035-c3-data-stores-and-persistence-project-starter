@@ -41,7 +41,6 @@ class TestPetRepository {
 			savedPet = optionalSavedPet.get();
 		}
 		assertNotNull(savedPet);
-		System.out.println("===> savedPet:\n" + savedPet.toString());
 		
 		assertTrue("purdy".equals(savedPet.getName()));
 		assertTrue(savedPet.getCustomer().getName().equals("Lorraine Figueroa"));
