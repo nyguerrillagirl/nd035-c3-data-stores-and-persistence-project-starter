@@ -58,14 +58,18 @@ public class CustomerServiceImpl implements ICustomerService {
 
 	@Override
 	public CustomerDTO getOwnerByPet(Long petId) {
+		
 		CustomerDTO customerDTO = new CustomerDTO();
 		Optional<Pet> optionalPet = petRepository.findById(petId);
 		if (optionalPet.isPresent()) {
 			Pet pet = optionalPet.get();
 			// TODO: Check this --> maybe we should get customer record directly
-			Customer customer = pet.getCustomer();
-			copyFromCustomerToDTO(customer, customerDTO);
+			Customer customer1 = pet.getCustomer();
+			logger.info("===> Customer record from pet: " + customer1.toString());
+						
+			copyFromCustomerToDTO(customer1, customerDTO);
 		}
+		logger.info("===> getOwnerByPet returning: " + customerDTO.toString());
 		return customerDTO;
 	}
 

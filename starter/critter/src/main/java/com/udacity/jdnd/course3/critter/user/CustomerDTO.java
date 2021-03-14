@@ -13,6 +13,17 @@ public class CustomerDTO {
     private String notes;
     private List<Long> petIds;
 
+    public String toString() {
+    	StringBuilder sb = new StringBuilder();
+    	sb.append("id: " + id);
+    	sb.append("\n\tCustomer Pets: ");
+    	if (petIds != null) {
+    		for (Long petId:petIds) {
+    			sb.append("\n\t\tPetId: " + petId);
+    		}
+    	}
+    	return sb.toString();
+    }
     public long getId() {
         return id;
     }

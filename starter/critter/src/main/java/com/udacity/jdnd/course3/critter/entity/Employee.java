@@ -53,12 +53,6 @@ public class Employee extends Person {
 				sb.append("\tday: " + aWorkday.toString() + "\n");
 			}
 		}
-		if (!schedules.isEmpty()) {
-			sb.append("\nEmployee Schedule: \n");
-			for (Schedule aSchedule:schedules) {
-				sb.append(aSchedule.toString());
-			}
-		}
 		return sb.toString();
 	}
 

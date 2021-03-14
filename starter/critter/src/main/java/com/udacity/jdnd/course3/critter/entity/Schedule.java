@@ -16,6 +16,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.OrderBy;
 import javax.persistence.Table;
 
 import com.udacity.jdnd.course3.critter.user.EmployeeSkill;
@@ -55,7 +56,23 @@ public class Schedule {
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/YYYY"); 
-		sb.append("Appt. date: " + formatter.format(date) + "\n");
+		sb.append("Id: " + id + ";Appt. date: " + formatter.format(date) + "\n");
+		if (scheduledEmployees != null) {
+			for (Employee anEmployee:scheduledEmployees) {
+				sb.append("\n\tEmployee: " + anEmployee.toString());
+			}
+		}
+		if (scheduledPets != null) {
+			for (Pet aPet:scheduledPets) {
+				sb.append("\n\tPet: " + aPet.toString());
+			}
+		}
+		if (activities != null) {
+			for (EmployeeSkill aSkill:activities) {
+				sb.append("\n\tSkill: " + aSkill);
+			}
+		}
+		
 		return sb.toString();
 	}
 	// Handle Employee

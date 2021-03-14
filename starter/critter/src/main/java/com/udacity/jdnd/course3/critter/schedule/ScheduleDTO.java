@@ -1,8 +1,11 @@
 package com.udacity.jdnd.course3.critter.schedule;
 
+import com.udacity.jdnd.course3.critter.entity.Employee;
+import com.udacity.jdnd.course3.critter.entity.Pet;
 import com.udacity.jdnd.course3.critter.user.EmployeeSkill;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Set;
 
@@ -57,4 +60,27 @@ public class ScheduleDTO {
     public void setActivities(Set<EmployeeSkill> activities) {
         this.activities = activities;
     }
+    
+	public String toString() {
+		StringBuilder sb = new StringBuilder();
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/YYYY"); 
+		sb.append("Id: " + id + ";Appt. date: " + formatter.format(date) + "\n");
+		if (employeeIds != null) {
+			for (Long employeeId:employeeIds) {
+				sb.append("\n\tEmployee Id: " + employeeId);
+			}
+		}
+		if (petIds != null) {
+			for (Long petId:petIds) {
+				sb.append("\n\tPet Id: " + petId);
+			}
+		}
+		if (activities != null) {
+			for (EmployeeSkill aSkill:activities) {
+				sb.append("\n\tSkill: " + aSkill);
+			}
+		}
+		
+		return sb.toString();
+	}
 }
